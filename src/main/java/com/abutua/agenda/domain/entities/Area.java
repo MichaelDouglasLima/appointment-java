@@ -23,7 +23,7 @@ public class Area implements Serializable {
   private String name;
 
   @ManyToMany
-  @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "area_id"), inverseJoinColumns = @JoinColumn(name = "professional_id"))
+  @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "AREA_ID"), inverseJoinColumns = @JoinColumn(name = "PROFESSIONAL_ID"))
   private Set<Professional> professionals = new HashSet<>();
 
   Area() {

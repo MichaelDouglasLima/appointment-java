@@ -17,7 +17,7 @@ public class Professional extends Person {
   private boolean active;
 
   @ManyToMany
-  @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "professional_id"), inverseJoinColumns = @JoinColumn(name = "area_id"))
+  @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "PROFESSIONAL_ID"), inverseJoinColumns = @JoinColumn(name = "AREA_ID"))
   private Set<Area> areas = new HashSet<>();
 
   Professional() {
