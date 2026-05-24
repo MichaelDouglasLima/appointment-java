@@ -1,39 +1,37 @@
 package com.abutua.agenda.domain.entities;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TBL_WORK_SCHEDULE_ITEM")
-public class WorkScheduleItem implements Serializable {
+@Table(name = "TBL_APPOINTMENT")
+public class Appointment implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private DayOfWeek dayOfWeek;
+  private Date date;
+
   private LocalTime startTime;
+
   private LocalTime endTime;
-  private Integer slots;
-  private Integer slotSize;
 
-  WorkScheduleItem() {
+  private String comments;
 
-  }
+  @Enumerated(EnumType.STRING)
+  private AppointmentStatus status;
 
-  public WorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, Integer slots,
-      Integer slotSize) {
-    this.dayOfWeek = dayOfWeek;
-    this.startTime = startTime;
-    this.endTime = endTime;
-    this.slots = slots;
-    this.slotSize = slotSize;
+  Appointment() {
+
   }
 
   public Long getId() {
@@ -44,12 +42,12 @@ public class WorkScheduleItem implements Serializable {
     this.id = id;
   }
 
-  public DayOfWeek getDayOfWeek() {
-    return dayOfWeek;
+  public Date getDate() {
+    return date;
   }
 
-  public void setDayOfWeek(DayOfWeek dayOfWeek) {
-    this.dayOfWeek = dayOfWeek;
+  public void setDate(Date date) {
+    this.date = date;
   }
 
   public LocalTime getStartTime() {
@@ -68,20 +66,20 @@ public class WorkScheduleItem implements Serializable {
     this.endTime = endTime;
   }
 
-  public Integer getSlots() {
-    return slots;
+  public String getComments() {
+    return comments;
   }
 
-  public void setSlots(Integer slots) {
-    this.slots = slots;
+  public void setComments(String comments) {
+    this.comments = comments;
   }
 
-  public Integer getSlotSize() {
-    return slotSize;
+  public AppointmentStatus getStatus() {
+    return status;
   }
 
-  public void setSlotSize(Integer slotSize) {
-    this.slotSize = slotSize;
+  public void setStatus(AppointmentStatus status) {
+    this.status = status;
   }
 
   @Override
@@ -100,7 +98,7 @@ public class WorkScheduleItem implements Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    WorkScheduleItem other = (WorkScheduleItem) obj;
+    Appointment other = (Appointment) obj;
     if (id == null) {
       if (other.id != null)
         return false;

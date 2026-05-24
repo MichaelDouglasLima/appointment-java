@@ -1,12 +1,17 @@
 package com.abutua.agenda.domain.entities;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -20,8 +25,18 @@ public class Professional extends Person {
   @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "PROFESSIONAL_ID"), inverseJoinColumns = @JoinColumn(name = "AREA_ID"))
   private Set<Area> areas = new HashSet<>();
 
+  @OneToMany
+  @JoinColumn(name = "PROFESSIONAL_ID")
+  private List<WorkScheduleItem> workScheduleItems = new ArrayList<WorkScheduleItem>();
+
   Professional() {
 
+  }
+
+  public void addWorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, int slots,
+      int slotSize) {
+    WorkScheduleItem wsi = new WorkScheduleItem(dayOfWeek, startTime, endTime, slots, slotSize);
+    workScheduleItems.add(wsi);
   }
 
   public boolean getActive() {
