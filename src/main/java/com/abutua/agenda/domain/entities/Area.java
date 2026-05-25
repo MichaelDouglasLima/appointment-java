@@ -1,7 +1,9 @@
 package com.abutua.agenda.domain.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +29,10 @@ public class Area implements Serializable {
   @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "AREA_ID"), inverseJoinColumns = @JoinColumn(name = "PROFESSIONAL_ID"))
   private Set<Professional> professionals = new HashSet<>();
 
-  Area() {
+  @OneToMany(mappedBy = "area")
+  private List<Appointment> appointments = new ArrayList<>();
+
+  public Area() {
   }
 
   public Integer getId() {
@@ -51,6 +57,14 @@ public class Area implements Serializable {
 
   public void setProfessionals(Set<Professional> professionals) {
     this.professionals = professionals;
+  }
+
+  public List<Appointment> getAppointments() {
+    return appointments;
+  }
+
+  public void setAppointments(List<Appointment> appointments) {
+    this.appointments = appointments;
   }
 
   @Override

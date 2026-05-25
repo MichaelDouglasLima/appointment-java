@@ -3,24 +3,21 @@ package com.abutua.agenda.domain.entities;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TBL_ROLE")
-public class Role implements Serializable {
+@Table(name = "TBL_APPOINTMENT_TYPE")
+public class AppointmentType implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+  private String type;
 
-  @Enumerated(EnumType.STRING)
-  private RoleName role;
+  public AppointmentType() {
 
-  public Role() {
   }
 
   public Integer getId() {
@@ -31,12 +28,12 @@ public class Role implements Serializable {
     this.id = id;
   }
 
-  public RoleName getRole() {
-    return role;
+  public String getType() {
+    return type;
   }
 
-  public void setRole(RoleName role) {
-    this.role = role;
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override
@@ -55,7 +52,7 @@ public class Role implements Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Role other = (Role) obj;
+    AppointmentType other = (AppointmentType) obj;
     if (id == null) {
       if (other.id != null)
         return false;

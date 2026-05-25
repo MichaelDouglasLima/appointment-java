@@ -21,7 +21,7 @@ public class User extends Person {
   @JoinTable(name = "TBL_USER_ROLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
-  User() {
+  public User() {
 
   }
 

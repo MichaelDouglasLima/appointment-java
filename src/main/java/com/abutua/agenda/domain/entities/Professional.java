@@ -29,7 +29,10 @@ public class Professional extends Person {
   @JoinColumn(name = "PROFESSIONAL_ID")
   private List<WorkScheduleItem> workScheduleItems = new ArrayList<WorkScheduleItem>();
 
-  Professional() {
+  @OneToMany(mappedBy = "professional")
+  private List<Appointment> appointments = new ArrayList<>();
+
+  public Professional() {
 
   }
 
@@ -53,6 +56,14 @@ public class Professional extends Person {
 
   public void setAreas(Set<Area> areas) {
     this.areas = areas;
+  }
+
+  public List<Appointment> getAppointments() {
+    return appointments;
+  }
+
+  public void setAppointments(List<Appointment> appointments) {
+    this.appointments = appointments;
   }
 
 }

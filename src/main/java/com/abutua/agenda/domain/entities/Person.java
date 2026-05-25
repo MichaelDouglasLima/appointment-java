@@ -2,6 +2,7 @@ package com.abutua.agenda.domain.entities;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,9 +20,11 @@ public class Person implements Serializable {
   private Long id;
 
   private String name;
+
+  @Column(length = 20)
   private String phone;
 
-  Person() {
+  public Person() {
 
   }
 

@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,12 +28,30 @@ public class Appointment implements Serializable {
 
   private LocalTime endTime;
 
+  @Column(length = 1024)
   private String comments;
 
   @Enumerated(EnumType.STRING)
-  private AppointmentStatus status;
+  @Column(length = 10)
+  private AppointmentStatus status = AppointmentStatus.OPEN;
 
-  Appointment() {
+  @ManyToOne
+  @JoinColumn(name = "CLIENT_ID")
+  private Client client;
+
+  @ManyToOne
+  @JoinColumn(name = "PROFESSIONAL_ID")
+  private Professional professional;
+
+  @ManyToOne
+  @JoinColumn(name = "AREA_ID")
+  private Area area;
+
+  @ManyToOne
+  @JoinColumn(name = "APPOINTMENT_TYPE_ID")
+  private AppointmentType appointmentType;
+
+  public Appointment() {
 
   }
 
@@ -80,6 +101,38 @@ public class Appointment implements Serializable {
 
   public void setStatus(AppointmentStatus status) {
     this.status = status;
+  }
+
+  public Client getClient() {
+    return client;
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
+  }
+
+  public Professional getProfessional() {
+    return professional;
+  }
+
+  public void setProfessional(Professional professional) {
+    this.professional = professional;
+  }
+
+  public Area getArea() {
+    return area;
+  }
+
+  public void setArea(Area area) {
+    this.area = area;
+  }
+
+  public AppointmentType getAppointmentType() {
+    return appointmentType;
+  }
+
+  public void setAppointmentType(AppointmentType appointmentType) {
+    this.appointmentType = appointmentType;
   }
 
   @Override

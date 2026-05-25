@@ -23,7 +23,7 @@ public class WorkScheduleItem implements Serializable {
   private Integer slots;
   private Integer slotSize;
 
-  WorkScheduleItem() {
+  public WorkScheduleItem() {
 
   }
 
