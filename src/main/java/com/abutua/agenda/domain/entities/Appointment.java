@@ -1,6 +1,7 @@
 package com.abutua.agenda.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -22,33 +23,36 @@ public class Appointment implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Date date;
+  @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE", nullable = false)
+  private LocalDate date;
 
+  @Column(columnDefinition = "TIME WITH TIME ZONE", nullable = false)
   private LocalTime startTime;
 
+  @Column(columnDefinition = "TIME WITH TIME ZONE", nullable = false)
   private LocalTime endTime;
 
   @Column(length = 1024)
   private String comments;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 10)
+  @Column(length = 10, nullable = false)
   private AppointmentStatus status = AppointmentStatus.OPEN;
 
   @ManyToOne
-  @JoinColumn(name = "CLIENT_ID")
+  @JoinColumn(name = "CLIENT_ID", nullable = false)
   private Client client;
 
   @ManyToOne
-  @JoinColumn(name = "PROFESSIONAL_ID")
+  @JoinColumn(name = "PROFESSIONAL_ID", nullable = false)
   private Professional professional;
 
   @ManyToOne
-  @JoinColumn(name = "AREA_ID")
+  @JoinColumn(name = "AREA_ID", nullable = false)
   private Area area;
 
   @ManyToOne
-  @JoinColumn(name = "APPOINTMENT_TYPE_ID")
+  @JoinColumn(name = "APPOINTMENT_TYPE_ID", nullable = false)
   private AppointmentType appointmentType;
 
   public Appointment() {
@@ -63,11 +67,11 @@ public class Appointment implements Serializable {
     this.id = id;
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 

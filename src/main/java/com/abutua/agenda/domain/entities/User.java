@@ -3,6 +3,7 @@ package com.abutua.agenda.domain.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -14,6 +15,8 @@ import jakarta.persistence.Table;
 @Table(name = "TBL_USER")
 @PrimaryKeyJoinColumn(name = "PERSON_ID")
 public class User extends Person {
+
+  @Column(nullable = false, unique = true)
   private String email;
   private String password;
 
