@@ -3,6 +3,7 @@ package com.abutua.agenda.domain.services;
 import com.abutua.agenda.domain.entities.Client;
 import com.abutua.agenda.domain.mappers.ClientMapper;
 import com.abutua.agenda.domain.repositories.ClientRepository;
+import com.abutua.agenda.dto.ClientRequest;
 import com.abutua.agenda.dto.ClientResponse;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,8 +30,17 @@ public class ClientService {
   }
 
   public ClientResponse getById(long id) {
-    Client client = this.clientRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Client not found!"));
+    // Client client = this.clientRepository.findById(id)
+    // .orElseThrow(() -> new EntityNotFoundException("Client not found!"));
+
+    var client = this.clientRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado!"));
+
+    return ClientMapper.toClientResponseDTO(client);
+  }
+
+  public ClientResponse save(ClientRequest clientRequest) {
+    var client = this.clientRepository.save(ClientMapper.toClientEntity(clientRequest));
     return ClientMapper.toClientResponseDTO(client);
   }
 }
