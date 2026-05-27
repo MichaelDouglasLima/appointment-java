@@ -9,16 +9,11 @@ import com.abutua.agenda.dto.ClientResponse;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.Locale.Category;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class ClientService {
@@ -74,7 +69,7 @@ public class ClientService {
       }
 
     } catch (DataIntegrityViolationException e) {
-      throw new DatabaseException("Constraint violation, product cant't delete");
+      throw new DatabaseException("Constraint violation, client cant't delete");
     }
   }
 

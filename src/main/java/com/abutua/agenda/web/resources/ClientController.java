@@ -15,8 +15,6 @@ import com.abutua.agenda.domain.services.ClientService;
 import com.abutua.agenda.dto.ClientRequest;
 import com.abutua.agenda.dto.ClientResponse;
 
-import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +57,7 @@ public class ClientController {
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<Void> update(@PathVariable long id, @RequestBody ClientRequest clientUpdate) {
+  public ResponseEntity<Void> updateClient(@PathVariable long id, @RequestBody ClientRequest clientUpdate) {
     this.clientService.updateById(id, clientUpdate);
     return ResponseEntity.ok().build();
   }
