@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,10 +14,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.abutua.agenda.domain.services.ClientService;
 import com.abutua.agenda.dto.ClientRequest;
 import com.abutua.agenda.dto.ClientResponse;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("clients")
@@ -40,7 +46,7 @@ public class ClientController {
   }
 
   @PostMapping
-  public ResponseEntity<ClientResponse> save(@RequestBody ClientRequest clientRequest) {
+  public ResponseEntity<ClientResponse> save(@Validated @RequestBody ClientRequest clientRequest) {
     ClientResponse clientResponse = this.clientService.save(clientRequest);
 
     URI location = ServletUriComponentsBuilder
@@ -50,5 +56,17 @@ public class ClientController {
         .toUri();
 
     return ResponseEntity.created(location).body(clientResponse);
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<Void> update(@PathVariable long id, @RequestBody ClientRequest clientUpdate) {
+    this.clientService.updateById(id, clientUpdate);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<Void> deleteClient(@PathVariable long id) {
+    this.clientService.deleteById(id);
+    return ResponseEntity.noContent().build();
   }
 }

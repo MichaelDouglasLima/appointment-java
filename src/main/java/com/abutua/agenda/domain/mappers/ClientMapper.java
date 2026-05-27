@@ -13,15 +13,22 @@ public class ClientMapper {
     return clientResponse;
   }
 
-  public static Client toClientEntity(ClientRequest clientRequest) {
-    Client client = new Client();
-
-    client.setName(clientRequest.name());
-    client.setPhone(clientRequest.phone());
-    client.setDateOfBirth(clientRequest.dateOfBirth());
-
-    return client;
+  public static Client fromClientRequestDTO(ClientRequest clientRequest) {
+    return new Client(
+        clientRequest.name(),
+        clientRequest.phone(),
+        clientRequest.dateOfBirth());
   }
+
+  // public static Client toClientEntity(ClientRequest clientRequest) {
+  // Client client = new Client();
+
+  // client.setName(clientRequest.name());
+  // client.setPhone(clientRequest.phone());
+  // client.setDateOfBirth(clientRequest.dateOfBirth());
+
+  // return client;
+  // }
 }
 
 // public class ClientMapper {

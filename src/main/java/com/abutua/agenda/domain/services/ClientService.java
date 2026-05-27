@@ -3,15 +3,22 @@ package com.abutua.agenda.domain.services;
 import com.abutua.agenda.domain.entities.Client;
 import com.abutua.agenda.domain.mappers.ClientMapper;
 import com.abutua.agenda.domain.repositories.ClientRepository;
+import com.abutua.agenda.domain.services.exceptions.DatabaseException;
 import com.abutua.agenda.dto.ClientRequest;
 import com.abutua.agenda.dto.ClientResponse;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.Locale.Category;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class ClientService {
@@ -40,7 +47,35 @@ public class ClientService {
   }
 
   public ClientResponse save(ClientRequest clientRequest) {
-    var client = this.clientRepository.save(ClientMapper.toClientEntity(clientRequest));
+    var client = this.clientRepository.save(ClientMapper.fromClientRequestDTO(clientRequest));
     return ClientMapper.toClientResponseDTO(client);
   }
+
+  public void updateById(long id, ClientRequest clientUpdate) {
+    try {
+      Client client = this.clientRepository.getReferenceById(id);
+
+      client.setName(clientUpdate.name());
+      client.setPhone(clientUpdate.phone());
+      client.setDateOfBirth(clientUpdate.dateOfBirth());
+
+      this.clientRepository.save(client);
+    } catch (EntityNotFoundException e) {
+      throw new EntityNotFoundException("Client not found!");
+    }
+  }
+
+  public void deleteById(long id) {
+    try {
+      if (this.clientRepository.existsById(id)) {
+        this.clientRepository.deleteById(id);
+      } else {
+        throw new EntityNotFoundException("Client not found!");
+      }
+
+    } catch (DataIntegrityViolationException e) {
+      throw new DatabaseException("Constraint violation, product cant't delete");
+    }
+  }
+
 }
