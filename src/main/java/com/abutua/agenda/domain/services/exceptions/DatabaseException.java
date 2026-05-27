@@ -1,4 +1,4 @@
-package com.abutua.product_backend.services.exceptions;
+package com.abutua.agenda.domain.services.exceptions;
 
 public class DatabaseException extends RuntimeException {
 
