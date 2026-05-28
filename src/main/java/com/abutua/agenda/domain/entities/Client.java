@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.abutua.agenda.dto.ClientResponse;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -27,6 +25,10 @@ public class Client extends Person {
   public Client(String name, String phone, LocalDate dateOfBirh) {
     super(name, phone);
     this.dateOfBirth = dateOfBirh;
+  }
+
+  public Client(Long id) {
+    super(id);
   }
 
   public LocalDate getDateOfBirth() {

@@ -35,6 +35,10 @@ public class Area implements Serializable {
   public Area() {
   }
 
+  public Area(Integer id) {
+    this.id = id;
+  }
+
   public Integer getId() {
     return id;
   }
