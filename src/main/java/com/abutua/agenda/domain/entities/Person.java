@@ -28,6 +28,10 @@ public class Person implements Serializable {
 
   }
 
+  public Person(Long id) {
+    this.id = id;
+  }
+
   public Person(String name, String phone) {
     this.name = name;
     this.phone = phone;

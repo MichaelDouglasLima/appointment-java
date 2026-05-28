@@ -29,6 +29,19 @@ public class ClientController {
   @Autowired
   private ClientService clientService;
 
+  @PostMapping
+  public ResponseEntity<ClientResponse> save(@Validated @RequestBody ClientRequest clientRequest) {
+    ClientResponse clientResponse = this.clientService.save(clientRequest);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(clientResponse.id())
+        .toUri();
+
+    return ResponseEntity.created(location).body(clientResponse);
+  }
+
   @GetMapping
   public ResponseEntity<Page<ClientResponse>> getClients(
       @RequestParam(name = "name_like", defaultValue = "") String name,
@@ -41,19 +54,6 @@ public class ClientController {
   public ResponseEntity<ClientResponse> getClient(@PathVariable long id) {
     ClientResponse clientResponse = this.clientService.getById(id);
     return ResponseEntity.ok(clientResponse);
-  }
-
-  @PostMapping
-  public ResponseEntity<ClientResponse> save(@Validated @RequestBody ClientRequest clientRequest) {
-    ClientResponse clientResponse = this.clientService.save(clientRequest);
-
-    URI location = ServletUriComponentsBuilder
-        .fromCurrentRequest()
-        .path("/{id}")
-        .buildAndExpand(clientResponse.id())
-        .toUri();
-
-    return ResponseEntity.created(location).body(clientResponse);
   }
 
   @PutMapping("{id}")
