@@ -62,8 +62,10 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
 
   private boolean isTimeSlotAvailable(LocalTime start, LocalTime end, List<Appointment> appointments) {
     return appointments.stream().noneMatch(
-        a -> a.getStartTime().isBefore(end) && a.getEndTime().isAfter(start) && (a.getStatus() != AppointmentStatus.OPEN
-            && a.getStatus() != AppointmentStatus.ABSENT && a.getStatus() != AppointmentStatus.PRESENT));
+        a -> a.getStartTime().isBefore(end) &&
+            a.getEndTime().isAfter(start) &&
+            (a.getStatus().equals(AppointmentStatus.OPEN) ||
+                a.getStatus().equals(AppointmentStatus.PRESENT)));
   }
 
   private List<Appointment> getAppointments(Professional professional, LocalDate date) {

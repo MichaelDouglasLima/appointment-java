@@ -18,7 +18,6 @@ public class WorkScheduleItem implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   private DayOfWeek dayOfWeek;
   private LocalTime startTime;
   private LocalTime endTime;
