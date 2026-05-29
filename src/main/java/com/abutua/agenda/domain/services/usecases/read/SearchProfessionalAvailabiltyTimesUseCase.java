@@ -33,13 +33,14 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
     List<Appointment> appointments = getAppointments(professional, date);
 
     for (var item : workScheduleItems) {
-      timeSlots.addAll(this.calculateTimeSlots(item, appointments));
+
+      timeSlots.addAll(this.calculateTimeSlots(item, appointments, date));
     }
 
     return timeSlots;
   }
 
-  private List<TimeSlot> calculateTimeSlots(WorkScheduleItem item, List<Appointment> appointments) {
+  private List<TimeSlot> calculateTimeSlots(WorkScheduleItem item, List<Appointment> appointments, LocalDate date) {
     var startTime = item.getStartTime();
     var slotSize = item.getSlotSize();
     var slots = item.getSlots();
@@ -50,7 +51,7 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
       var start = startTime.plusMinutes(i * slotSize);
       var end = start.plusMinutes(slotSize);
 
-      boolean available = this.isTimeSlotAvailable(start, end, appointments);
+      boolean available = this.isTimeSlotAvailable(start, end, appointments, date);
 
       TimeSlot timeSlot = new TimeSlot(start, end, available);
 
@@ -60,7 +61,13 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
     return timeSlots;
   }
 
-  private boolean isTimeSlotAvailable(LocalTime start, LocalTime end, List<Appointment> appointments) {
+  private boolean isTimeSlotAvailable(LocalTime start, LocalTime end, List<Appointment> appointments, LocalDate date) {
+    if (date.isBefore(LocalDate.now())) {
+      return false;
+    } else if (date.isEqual(LocalDate.now()) && start.isBefore(LocalTime.now())) {
+      return false;
+    }
+
     return appointments.stream().noneMatch(
         a -> a.getStartTime().isBefore(end) &&
             a.getEndTime().isAfter(start) &&

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abutua.agenda.domain.models.TimeSlot;
 import com.abutua.agenda.domain.services.ProfessionalService;
+import com.abutua.agenda.dto.TimeSlotResponse;
 
 @RestController
 @RequestMapping("professionals")
@@ -22,11 +23,10 @@ public class ProfessionalController {
   private ProfessionalService professionalService;
 
   @GetMapping("{id}/availability-times")
-  public ResponseEntity<List<TimeSlot>> getProfessionalAvailableTimes(@PathVariable long id,
+  public ResponseEntity<List<TimeSlotResponse>> getAvailabilityTimes(@PathVariable long id,
       @RequestParam(name = "date", defaultValue = "") String dateStr) {
 
     LocalDate date = dateStr.isEmpty() ? LocalDate.now() : LocalDate.parse(dateStr);
-    List<TimeSlot> timeSlots = this.professionalService.searchProfessionalAvailabilty(id, date);
-    return ResponseEntity.ok(timeSlots);
+    return ResponseEntity.ok(this.professionalService.getAvailabilityTimes(id, date));
   }
 }
