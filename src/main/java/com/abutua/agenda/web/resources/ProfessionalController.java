@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.abutua.agenda.domain.models.TimeSlot;
 import com.abutua.agenda.domain.services.ProfessionalService;
 import com.abutua.agenda.dto.TimeSlotResponse;
 
@@ -24,9 +23,7 @@ public class ProfessionalController {
 
   @GetMapping("{id}/availability-times")
   public ResponseEntity<List<TimeSlotResponse>> getAvailabilityTimes(@PathVariable long id,
-      @RequestParam(name = "date", defaultValue = "") String dateStr) {
-
-    LocalDate date = dateStr.isEmpty() ? LocalDate.now() : LocalDate.parse(dateStr);
+      @RequestParam(name = "date") LocalDate date) {
     return ResponseEntity.ok(this.professionalService.getAvailabilityTimes(id, date));
   }
 }

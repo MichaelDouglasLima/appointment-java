@@ -51,9 +51,10 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
       var start = startTime.plusMinutes(i * slotSize);
       var end = start.plusMinutes(slotSize);
 
-      boolean available = this.isTimeSlotAvailable(start, end, appointments, date);
+      boolean available = this.isTimeSlotAvailable(start, end, appointments);
+      boolean nowOrFuture = this.isStartTimeValidIfDateIsToday(start, date);
 
-      TimeSlot timeSlot = new TimeSlot(start, end, available);
+      TimeSlot timeSlot = new TimeSlot(start, end, available && nowOrFuture);
 
       timeSlots.add(timeSlot);
     }
@@ -61,12 +62,7 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
     return timeSlots;
   }
 
-  private boolean isTimeSlotAvailable(LocalTime start, LocalTime end, List<Appointment> appointments, LocalDate date) {
-    if (date.isBefore(LocalDate.now())) {
-      return false;
-    } else if (date.isEqual(LocalDate.now()) && start.isBefore(LocalTime.now())) {
-      return false;
-    }
+  private boolean isTimeSlotAvailable(LocalTime start, LocalTime end, List<Appointment> appointments) {
 
     return appointments.stream().noneMatch(
         a -> a.getStartTime().isBefore(end) &&
@@ -83,5 +79,17 @@ public class SearchProfessionalAvailabiltyTimesUseCase {
     return this.workScheduleItemRepository
         .getWorkScheduleFromProfessionalByDayOfWeekOrderByStartTime(professional,
             date.getDayOfWeek());
+  }
+
+  private boolean isStartTimeValidIfDateIsToday(LocalTime start, LocalDate date) {
+    return date.isAfter(LocalDate.now()) || (date.equals(LocalDate.now()) && start.isAfter(LocalTime.now()));
+
+    // if (date.isBefore(LocalDate.now())) {
+    // return false;
+    // } else if (date.isEqual(LocalDate.now()) && start.isBefore(LocalTime.now()))
+    // {
+    // return false;
+    // }
+    // return true;
   }
 }
