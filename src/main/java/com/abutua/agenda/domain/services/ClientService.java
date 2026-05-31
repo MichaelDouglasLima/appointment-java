@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClientService {
@@ -25,12 +26,14 @@ public class ClientService {
     this.clientRepository = clientRepository;
   }
 
+  @Transactional(readOnly = true)
   public Page<ClientResponse> findByNameContainingIgnoreCase(String name, int page, int size) {
     PageRequest pageRequest = PageRequest.of(page, size);
     Page<Client> pageClient = this.clientRepository.findByNameContainingIgnoreCase(name, pageRequest);
     return pageClient.map(c -> ClientMapper.toClientResponseDTO(c));
   }
 
+  @Transactional(readOnly = true)
   public ClientResponse getById(long id) {
     // Client client = this.clientRepository.findById(id)
     // .orElseThrow(() -> new EntityNotFoundException("Client not found!"));
@@ -41,11 +44,13 @@ public class ClientService {
     return ClientMapper.toClientResponseDTO(client);
   }
 
+  @Transactional
   public ClientResponse save(ClientRequest clientRequest) {
     var client = this.clientRepository.save(ClientMapper.fromClientRequestDTO(clientRequest));
     return ClientMapper.toClientResponseDTO(client);
   }
 
+  @Transactional
   public void updateById(long id, ClientRequest clientUpdate) {
     try {
       Client client = this.clientRepository.getReferenceById(id);
@@ -60,6 +65,7 @@ public class ClientService {
     }
   }
 
+  @Transactional
   public void deleteById(long id) {
     try {
       if (this.clientRepository.existsById(id)) {
