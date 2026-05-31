@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.abutua.agenda.domain.entities.Appointment;
 import com.abutua.agenda.domain.entities.AppointmentType;
@@ -42,6 +44,7 @@ public class CreateAppointmentUseCase {
   @Autowired
   private SearchProfessionalAvailabiltyTimesUseCase searchProfessionalAvailabiltyTimesUseCase;
 
+  @Transactional
   public Appointment executeUseCase(Appointment appointment) {
     checkAppointmentTypeExistsOrElseThrow(appointment.getAppointmentType());
     checkAreaExistsOrElseThrow(appointment.getArea());
@@ -49,7 +52,7 @@ public class CreateAppointmentUseCase {
     Professional professional = this.getProfessionalIfExistsOrThrowsException(appointment.getProfessional());
     checkProfessionalIsActiveOrThrowsException(professional);
     checkAssociationBetweenProfessionalAndAreaOrThrowsException(professional, appointment.getArea());
-    checkProfessionalCanCreateAppointmentAtDateAndTimeOrThrowsException(professional, appointment);
+
     checkProfessionalHasAvailableScheduleOrThorwsException(professional, appointment);
 
     checkAppointmentIsNowOrFutureOrThrowsException(appointment.getDate(), appointment.getStartTime());
@@ -60,8 +63,14 @@ public class CreateAppointmentUseCase {
     // checkAppointmentIsNowOrFutureOrThrowsException(appointment.getDate(),
 
     Client client = this.getClientIfExistsOrThrowsException(appointment.getClient());
-    checkClientCanCreateAppointmentAtDateAndTimeOrThrowsException(client, appointment);
 
+    return save(appointment, client, professional);
+  }
+
+  @Transactional(isolation = Isolation.SERIALIZABLE)
+  private Appointment save(Appointment appointment, Client client, Professional professional) {
+    checkProfessionalCanCreateAppointmentAtDateAndTimeOrThrowsException(professional, appointment);
+    checkClientCanCreateAppointmentAtDateAndTimeOrThrowsException(client, appointment);
     return this.appointmentRepository.save(appointment);
   }
 
