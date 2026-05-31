@@ -14,12 +14,32 @@ import com.abutua.agenda.domain.services.exceptions.DatabaseException;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
   public ResourceExceptionHandler() {
 
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ValidationErrors> constraintException(ConstraintViolationException exception,
+      HttpServletRequest request) {
+
+    ValidationErrors error = new ValidationErrors();
+
+    HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
+
+    error.setError("Constraint Error");
+    error.setMessage("Parâmetros Requiridos!");
+    error.setPath(request.getRequestURI());
+    error.setStatus(status.value());
+    error.setTimeStamp(Instant.now());
+
+    exception.getConstraintViolations().forEach(e -> error.addError(e.getMessage()));
+
+    return ResponseEntity.status(status).body(error);
   }
 
   @ExceptionHandler(DateTimeParseException.class)
