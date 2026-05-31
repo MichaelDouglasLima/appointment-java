@@ -42,14 +42,8 @@ public class ProfessionalController {
 
       @NotNull(message = "O parâmetro ano é requirido!") @Min(value = 1900, message = "O ano deve ser maior que 1900") @Pattern(regexp = "^\\d{4}$", message = "Formato do ano inválido! Utilize o formato: 'yyyy'.") @RequestParam(name = "year", required = false) String year) {
 
-    List<Integer> days = new ArrayList<Integer>();
-
-    days.addAll(Arrays.asList(
-        (int) (Math.floor(Math.random() * 20) + 1),
-        (int) (Math.floor(Math.random() * 20) + 1),
-        (int) (Math.floor(Math.random() * 20) + 1),
-        (int) (Math.floor(Math.random() * 20) + 1),
-        (int) (Math.floor(Math.random() * 20) + 1)));
+    List<Integer> days = this.professionalService.getAvailabilityDays(id, Integer.valueOf(month),
+        Integer.valueOf(year));
 
     return ResponseEntity.ok(days);
   }

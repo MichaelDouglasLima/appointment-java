@@ -11,6 +11,7 @@ import com.abutua.agenda.domain.entities.Professional;
 import com.abutua.agenda.domain.mappers.TimeSlotMapper;
 import com.abutua.agenda.domain.models.TimeSlot;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
+import com.abutua.agenda.domain.services.usecases.read.SearchProfessionalAvailabiltyDaysUseCase;
 import com.abutua.agenda.domain.services.usecases.read.SearchProfessionalAvailabiltyTimesUseCase;
 import com.abutua.agenda.dto.TimeSlotResponse;
 
@@ -23,14 +24,24 @@ public class ProfessionalService {
   private SearchProfessionalAvailabiltyTimesUseCase searchProfessionalAvailabiltyTimesUseCase;
 
   @Autowired
+  private SearchProfessionalAvailabiltyDaysUseCase searchProfessionalAvailabiltyDaysUseCase;
+
+  @Autowired
   private ProfessionalRepository professionalRepository;
 
-  public List<TimeSlotResponse> getAvailabilityTimes(Long professionalId, LocalDate date) {
+  public List<TimeSlotResponse> getAvailabilityTimes(long professionalId, LocalDate date) {
     Professional professional = this.professionalRepository.findById(professionalId)
         .orElseThrow(() -> new EntityNotFoundException("Professional não encontrado!"));
 
     List<TimeSlot> timeSlots = this.searchProfessionalAvailabiltyTimesUseCase.executeUseCase(professional, date);
 
     return timeSlots.stream().map(ts -> TimeSlotMapper.toTimeSlotResponseDTO(ts)).collect((Collectors.toList()));
+  }
+
+  public List<Integer> getAvailabilityDays(long professionalId, int month, int year) {
+    Professional professional = this.professionalRepository.findById(professionalId)
+        .orElseThrow(() -> new EntityNotFoundException("Professional não encontrado!"));
+
+    return this.searchProfessionalAvailabiltyDaysUseCase.executeUseCase(professional, month, year);
   }
 }
