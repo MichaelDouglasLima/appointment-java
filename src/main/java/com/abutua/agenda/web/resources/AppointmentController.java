@@ -9,8 +9,6 @@ import com.abutua.agenda.dto.AppointmentRequest;
 import com.abutua.agenda.dto.AppointmentResponse;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

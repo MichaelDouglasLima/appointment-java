@@ -11,15 +11,53 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.abutua.agenda.domain.services.exceptions.BusinessException;
 import com.abutua.agenda.domain.services.exceptions.DatabaseException;
+import com.abutua.agenda.domain.services.exceptions.ParameterException;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
   public ResourceExceptionHandler() {
 
+  }
+
+  @ExceptionHandler(ParameterException.class)
+  public ResponseEntity<StandardError> parameterException(ParameterException exception,
+      HttpServletRequest request) {
+
+    StandardError error = new StandardError();
+
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+
+    error.setError("Parameter exception");
+    error.setMessage(exception.getMessage());
+    error.setPath(request.getRequestURI());
+    error.setStatus(status.value());
+    error.setTimeStamp(Instant.now());
+
+    return ResponseEntity.status(status).body(error);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ValidationErrors> constraintException(ConstraintViolationException exception,
+      HttpServletRequest request) {
+
+    ValidationErrors error = new ValidationErrors();
+
+    HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
+
+    error.setError("Constraint Error");
+    error.setMessage("Parâmetros Requiridos!");
+    error.setPath(request.getRequestURI());
+    error.setStatus(status.value());
+    error.setTimeStamp(Instant.now());
+
+    exception.getConstraintViolations().forEach(e -> error.addError(e.getMessage()));
+
+    return ResponseEntity.status(status).body(error);
   }
 
   @ExceptionHandler(DateTimeParseException.class)

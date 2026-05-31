@@ -1,5 +1,6 @@
 package com.abutua.agenda.domain.entities.testrunner;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,11 +15,13 @@ import com.abutua.agenda.domain.entities.AppointmentType;
 import com.abutua.agenda.domain.entities.Area;
 import com.abutua.agenda.domain.entities.Client;
 import com.abutua.agenda.domain.entities.Professional;
+import com.abutua.agenda.domain.entities.WorkScheduleItem;
 import com.abutua.agenda.domain.repositories.AppointmentRepository;
 import com.abutua.agenda.domain.repositories.AppointmentTypeRepository;
 import com.abutua.agenda.domain.repositories.AreaRepository;
 import com.abutua.agenda.domain.repositories.ClientRepository;
 import com.abutua.agenda.domain.repositories.ProfessionalRepository;
+import com.abutua.agenda.domain.repositories.WorkScheduleItemRepository;
 
 @Component
 @Profile("runner")
@@ -38,6 +41,9 @@ public class BDRunnerTestEntities implements ApplicationRunner {
 
   @Autowired
   private AppointmentRepository appointmentRepository;
+
+  @Autowired
+  private WorkScheduleItemRepository workScheduleItemRepository;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
@@ -64,6 +70,11 @@ public class BDRunnerTestEntities implements ApplicationRunner {
     appointment.setComments("Teste do runner");
 
     appointmentRepository.save(appointment);
+
+    WorkScheduleItem ws = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"),
+        LocalTime.parse("12:00:00"), 8, 30);
+
+    this.workScheduleItemRepository.save(ws);
   }
 
 }
