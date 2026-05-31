@@ -33,7 +33,7 @@ public class ProfessionalController {
   @GetMapping("{id}/availability-times")
   public ResponseEntity<List<TimeSlotResponse>> getAvailabilityTimes(@PathVariable long id,
       @RequestParam(name = "date", required = false) @NotNull(message = "O parâmetro data é requirido!") @FutureOrPresent(message = "A data ver ser igual ou maior que a data atual!") LocalDate date) {
-    return ResponseEntity.ok(this.professionalService.getAvailabilityTimes(id, date));
+    return ResponseEntity.ok(this.professionalService.getAvailabilityTimesFromProfessional(id, date));
   }
 
   @GetMapping("{id}/availability-days")
@@ -42,7 +42,7 @@ public class ProfessionalController {
 
       @NotNull(message = "O parâmetro ano é requirido!") @Min(value = 1900, message = "O ano deve ser maior que 1900") @Pattern(regexp = "^\\d{4}$", message = "Formato do ano inválido! Utilize o formato: 'yyyy'.") @RequestParam(name = "year", required = false) String year) {
 
-    List<Integer> days = this.professionalService.getAvailabilityDays(id, Integer.valueOf(month),
+    List<Integer> days = this.professionalService.getAvailabilityDaysFromProfessional(id, Integer.valueOf(month),
         Integer.valueOf(year));
 
     return ResponseEntity.ok(days);

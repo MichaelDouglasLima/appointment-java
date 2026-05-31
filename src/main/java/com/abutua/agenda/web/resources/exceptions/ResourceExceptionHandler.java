@@ -32,7 +32,7 @@ public class ResourceExceptionHandler {
 
     HttpStatus status = HttpStatus.BAD_REQUEST;
 
-    error.setError("Parameter Error");
+    error.setError("Parameter exception");
     error.setMessage(exception.getMessage());
     error.setPath(request.getRequestURI());
     error.setStatus(status.value());
