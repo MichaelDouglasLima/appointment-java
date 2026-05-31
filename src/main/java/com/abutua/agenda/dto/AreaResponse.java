@@ -1,7 +1,7 @@
 package com.abutua.agenda.dto;
 
 public record AreaResponse(
-    int id,
+    Integer id,
     String name) {
 
 }

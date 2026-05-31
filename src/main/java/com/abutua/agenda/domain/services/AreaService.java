@@ -32,17 +32,34 @@ public class AreaService {
   }
 
   @Transactional(readOnly = true)
-  public Set<ProfessionalResponse> getProfessionalsByAreaId(int areaId, Boolean active) {
-    Area area = this.areaRepository.findById(areaId)
-        .orElseThrow(() -> new EntityNotFoundException("Área não encontrada!"));
+  public List<ProfessionalResponse> getProfessionalsByArea(int areaId) {
 
-    Stream<Professional> stream = area.getProfessionals().stream();
+    if (!areaRepository.existsById(areaId)) {
+      throw new EntityNotFoundException("Area não cadastrada");
+    } else {
+      var professionalsByArea = areaRepository.findActiveProfessionalsById(areaId);
 
-    if (active) {
-      stream = stream.filter(p -> p.isActive());
+      return professionalsByArea
+          .stream()
+          .map(p -> ProfessionalMapper.toProfessionalResponseDTO(p))
+          .collect(Collectors.toList());
     }
 
-    return stream.map(ProfessionalMapper::toProfessionalResponseDTO)
-        .collect(Collectors.toSet());
   }
+
+  // @Transactional(readOnly = true)
+  // public Set<ProfessionalResponse> getProfessionalsByAreaId(int areaId, Boolean
+  // active) {
+  // Area area = this.areaRepository.findById(areaId)
+  // .orElseThrow(() -> new EntityNotFoundException("Área não encontrada!"));
+
+  // Stream<Professional> stream = area.getProfessionals().stream();
+
+  // if (active) {
+  // stream = stream.filter(p -> p.isActive());
+  // }
+
+  // return stream.map(ProfessionalMapper::toProfessionalResponseDTO)
+  // .collect(Collectors.toSet());
+  // }
 }

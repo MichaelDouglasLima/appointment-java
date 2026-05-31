@@ -30,9 +30,16 @@ public class AreaController {
   }
 
   @GetMapping("{id}/professionals")
-  public ResponseEntity<Set<ProfessionalResponse>> getProfessionalsByAreaId(@PathVariable int id,
-      @RequestParam(name = "active", required = false) boolean active) {
-    Set<ProfessionalResponse> professionalsResponse = this.areaService.getProfessionalsByAreaId(id, active);
-    return ResponseEntity.ok(professionalsResponse);
+  public ResponseEntity<List<ProfessionalResponse>> getProfessionalsByArea(@PathVariable int id) {
+    return ResponseEntity.ok(areaService.getProfessionalsByArea(id));
   }
+
+  // @GetMapping("{id}/professionals")
+  // public ResponseEntity<Set<ProfessionalResponse>>
+  // getProfessionalsByAreaId(@PathVariable int id,
+  // @RequestParam(name = "active", required = false) boolean active) {
+  // Set<ProfessionalResponse> professionalsResponse =
+  // this.areaService.getProfessionalsByArea(id, active);
+  // return ResponseEntity.ok(professionalsResponse);
+  // }
 }
