@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.abutua.agenda.domain.entities.Appointment;
-import com.abutua.agenda.domain.entities.Client;
 import com.abutua.agenda.domain.entities.Professional;
 import com.abutua.agenda.domain.mappers.TimeSlotMapper;
 import com.abutua.agenda.domain.models.TimeSlot;
@@ -50,6 +48,10 @@ public class ProfessionalService {
     checkMonthAndCurrentYearIsValidOrThrowsException(month, year);
 
     LocalDate start = LocalDate.of(year, month, 1);
+    if (start.isBefore(LocalDate.now())) {
+      start = LocalDate.now();
+    }
+
     LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
 
     return this.searchProfessionalAvailabiltyDaysUseCase.executeUseCase(professionalId, start, end);
