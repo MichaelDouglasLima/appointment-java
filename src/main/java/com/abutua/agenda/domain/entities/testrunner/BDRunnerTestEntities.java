@@ -47,29 +47,29 @@ public class BDRunnerTestEntities implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    Client c1 = clientRepository.findById(1L).get();
-    System.out.println(c1);
+    // Client c1 = clientRepository.findById(1L).get();
+    // System.out.println(c1);
 
-    Professional p1 = professionalRepository.findById(4L).get();
-    System.out.println(p1);
+    // Professional p1 = professionalRepository.findById(4L).get();
+    // System.out.println(p1);
 
-    Area a1 = areaRepository.findById(1).get();
-    System.out.println(a1);
+    // Area a1 = areaRepository.findById(1).get();
+    // System.out.println(a1);
 
-    AppointmentType at1 = appointmentTypeRepository.findById(1).get();
-    System.out.println(at1);
+    // AppointmentType at1 = appointmentTypeRepository.findById(1).get();
+    // System.out.println(at1);
 
-    Appointment appointment = new Appointment();
-    appointment.setClient(c1);
-    appointment.setProfessional(p1);
-    appointment.setArea(a1);
-    appointment.setAppointmentType(at1);
-    appointment.setDate(LocalDate.now());
-    appointment.setStartTime(LocalTime.parse("08:00:00"));
-    appointment.setEndTime(LocalTime.parse("08:30:00"));
-    appointment.setComments("Teste do runner");
+    // Appointment appointment = new Appointment();
+    // appointment.setClient(c1);
+    // appointment.setProfessional(p1);
+    // appointment.setArea(a1);
+    // appointment.setAppointmentType(at1);
+    // appointment.setDate(LocalDate.now());
+    // appointment.setStartTime(LocalTime.parse("08:00:00"));
+    // appointment.setEndTime(LocalTime.parse("08:30:00"));
+    // appointment.setComments("Teste do runner");
 
-    appointmentRepository.save(appointment);
+    // appointmentRepository.save(appointment);
 
     WorkScheduleItem ws = new WorkScheduleItem(DayOfWeek.MONDAY, LocalTime.parse("08:00:00"),
         LocalTime.parse("12:00:00"), 8, 30);

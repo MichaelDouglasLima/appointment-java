@@ -1,16 +1,13 @@
 package com.abutua.agenda.domain.services;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.abutua.agenda.domain.entities.Area;
-import com.abutua.agenda.domain.entities.Professional;
 import com.abutua.agenda.domain.mappers.AreaMapper;
 import com.abutua.agenda.domain.mappers.ProfessionalMapper;
 import com.abutua.agenda.domain.repositories.AreaRepository;
