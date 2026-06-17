@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -25,7 +26,7 @@ public class Professional extends Person {
   @JoinTable(name = "TBL_AREA_PROFESSIONAL", joinColumns = @JoinColumn(name = "PROFESSIONAL_ID"), inverseJoinColumns = @JoinColumn(name = "AREA_ID"))
   private Set<Area> areas = new HashSet<>();
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "PROFESSIONAL_ID")
   private List<WorkScheduleItem> workScheduleItems = new ArrayList<WorkScheduleItem>();
 
@@ -38,6 +39,11 @@ public class Professional extends Person {
 
   public Professional(Long id) {
     super(id);
+  }
+
+  public Professional(String name, String phone, boolean active) {
+    super(name, phone);
+    this.active = active;
   }
 
   public void addWorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, int slots,
