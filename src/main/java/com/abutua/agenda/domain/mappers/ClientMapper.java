@@ -8,7 +8,7 @@ public class ClientMapper {
 
   public static ClientResponse toClientResponseDTO(Client client) {
     ClientResponse clientResponse = new ClientResponse(client.getId(), client.getName(), client.getPhone(),
-        client.getDateOfBirth());
+        client.getDateOfBirth(), client.getComments());
 
     return clientResponse;
   }
@@ -17,7 +17,8 @@ public class ClientMapper {
     return new Client(
         clientRequest.name(),
         clientRequest.phone(),
-        clientRequest.dateOfBirth());
+        clientRequest.dateOfBirth(),
+        clientRequest.comments());
   }
 
   // public static Client toClientEntity(ClientRequest clientRequest) {
