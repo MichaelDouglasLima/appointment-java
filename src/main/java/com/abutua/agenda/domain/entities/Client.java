@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -15,6 +16,9 @@ import jakarta.persistence.Table;
 public class Client extends Person {
   private LocalDate dateOfBirth;
 
+  @Column(length = 1024)
+  private String comments;
+
   @OneToMany(mappedBy = "client")
   private List<Appointment> appointments = new ArrayList<>();
 
@@ -25,6 +29,12 @@ public class Client extends Person {
   public Client(String name, String phone, LocalDate dateOfBirh) {
     super(name, phone);
     this.dateOfBirth = dateOfBirh;
+  }
+
+  public Client(String name, String phone, LocalDate dateOfBirh, String comments) {
+    super(name, phone);
+    this.dateOfBirth = dateOfBirh;
+    this.comments = comments;
   }
 
   public Client(Long id) {
@@ -45,6 +55,14 @@ public class Client extends Person {
 
   public void setAppointments(List<Appointment> appointments) {
     this.appointments = appointments;
+  }
+
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
   }
 
   // public ClientResponse toDTO() {
