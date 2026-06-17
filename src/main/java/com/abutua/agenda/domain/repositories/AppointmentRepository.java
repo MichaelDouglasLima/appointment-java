@@ -149,4 +149,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
       "    (a.status = 'OPEN' OR a.status = 'PRESENT' ) " +
       "ORDER BY startTime ", nativeQuery = true)
   public List<TimeSlot> getAvailableTimesFromProfessional(long professionalId, LocalDate date);
+
+  boolean existsByProfessional_Id(Long professionalId);
 }
