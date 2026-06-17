@@ -1,5 +1,7 @@
 package com.abutua.agenda.domain.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,4 +14,6 @@ public interface ProfessionalRepository extends JpaRepository<Professional, Long
       "FROM Professional p JOIN p.areas a " +
       "WHERE p.id = :professionalId AND a.id = :areaId")
   boolean existsAssocioationWithArea(Long professionalId, Integer areaId);
+
+  Page<Professional> findByNameContainingIgnoreCase(String name, Pageable page);
 }

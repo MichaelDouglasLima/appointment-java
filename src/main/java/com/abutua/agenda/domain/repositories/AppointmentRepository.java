@@ -50,4 +50,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
   public List<TimeSlot> getAvailableTimesFromProfessional(long professionalId, LocalDate date);
 
+  boolean existsByProfessional_Id(Long professionalId);
 }
