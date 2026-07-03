@@ -46,6 +46,11 @@ public class Professional extends Person {
     this.active = active;
   }
 
+  public Professional(Long id, String name, String phone, boolean active) {
+    super(id, name, phone);
+    this.active = active;
+  }
+
   public void addWorkScheduleItem(DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, int slots,
       int slotSize) {
     WorkScheduleItem wsi = new WorkScheduleItem(dayOfWeek, startTime, endTime, slots, slotSize);

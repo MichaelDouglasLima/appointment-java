@@ -103,7 +103,7 @@ public class CreateAppointmentUseCase {
   }
 
   private void checkAssociationBetweenProfessionalAndAreaOrThrowsException(Professional professional, Area area) {
-    if (!this.professionalRepository.existsAssocioationWithArea(professional.getId(), area.getId())) {
+    if (!this.professionalRepository.existsAssociationWithArea(professional.getId(), area.getId())) {
       throw new BusinessException("O profissional não atua na área selecionada.");
     }
   }
