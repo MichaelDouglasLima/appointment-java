@@ -37,24 +37,54 @@ public class AreaControllerTest {
   }
 
   @Test
-  public void getProfessionalsByAreaTest_OK() throws Exception {
+  public void getProfessionalsByAreaTest_Ok() throws Exception {
     var result = mockMvc.perform(get("/areas/1/professionals"));
-
     result.andExpect(status().isOk())
-        .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0].id", equalTo(6)))
         .andExpect(jsonPath("$[0].name", equalTo("Marcelo Silva")))
+        .andExpect(jsonPath("$[0].phone", equalTo("13 999216212")))
         .andExpect(jsonPath("$[0].active", equalTo(true)))
         .andExpect(jsonPath("$[1].id", equalTo(7)))
         .andExpect(jsonPath("$[1].name", equalTo("Fernanda Cruz")))
+        .andExpect(jsonPath("$[1].phone", equalTo("13 999216212")))
         .andExpect(jsonPath("$[1].active", equalTo(true)));
+
+    result = mockMvc.perform(get("/areas/2/professionals"));
+    result.andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].id", equalTo(7)))
+        .andExpect(jsonPath("$[0].name", equalTo("Fernanda Cruz")))
+        .andExpect(jsonPath("$[0].phone", equalTo("13 999216212")))
+        .andExpect(jsonPath("$[0].active", equalTo(true)));
+
   }
 
   @Test
-  public void getProfessionalsByAreaTest_NOT_FOUND() throws Exception {
-    var result = mockMvc.perform(get("/areas/4/professionals"));
-
+  public void getProfessionalsByAreaTest_NotFound() throws Exception {
+    var result = mockMvc.perform(get("/areas/5/professionals"));
     result.andExpect(status().isNotFound());
   }
+
+  // @Test
+  // public void getProfessionalsByAreaTest_OK() throws Exception {
+  // var result = mockMvc.perform(get("/areas/1/professionals"));
+
+  // result.andExpect(status().isOk())
+  // .andExpect(jsonPath("$").isArray())
+  // .andExpect(jsonPath("$", hasSize(2)))
+  // .andExpect(jsonPath("$[0].id", equalTo(6)))
+  // .andExpect(jsonPath("$[0].name", equalTo("Marcelo Silva")))
+  // .andExpect(jsonPath("$[0].active", equalTo(true)))
+  // .andExpect(jsonPath("$[1].id", equalTo(7)))
+  // .andExpect(jsonPath("$[1].name", equalTo("Fernanda Cruz")))
+  // .andExpect(jsonPath("$[1].active", equalTo(true)));
+  // }
+
+  // @Test
+  // public void getProfessionalsByAreaTest_NOT_FOUND() throws Exception {
+  // var result = mockMvc.perform(get("/areas/4/professionals"));
+
+  // result.andExpect(status().isNotFound());
+  // }
 }
