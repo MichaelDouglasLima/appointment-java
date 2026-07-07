@@ -1,19 +1,30 @@
 package com.abutua.agenda.integration.web.resources;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 
 import org.assertj.core.util.Arrays;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.MediaType;
+
+import com.abutua.agenda.dto.ProfessionalRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -21,6 +32,9 @@ public class ProfessionalControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private ObjectMapper objectMapper;
 
   @Test
   public void getAvailabilityTimes_WithAppointments_Ok() throws Exception {
@@ -88,5 +102,74 @@ public class ProfessionalControllerTest {
         get("/professionals/6/availability-times").param("date", dateFuture.toString()));
     result.andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$.length()").value(0));
+  }
+
+  @Test
+  public void getProfessionalById_Ok() throws Exception {
+    var result = mockMvc.perform(get("/professionals/6"));
+
+    result.andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", equalTo(6)))
+        .andExpect(jsonPath("$.name", equalTo("Marcelo Silva")))
+        .andExpect(jsonPath("$.phone", equalTo("13 999216212")))
+        .andExpect(jsonPath("$.active", equalTo(true)));
+  }
+
+  @Test
+  public void getProfessionalById_NotFound() throws Exception {
+    var result = mockMvc.perform(get("/professionals/404"));
+
+    result.andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void saveProfessional_Created() throws Exception {
+    ProfessionalRequest professionalRequest = new ProfessionalRequest("Pedro Rocha", "15 999336117", true,
+        List.of());
+
+    var result = mockMvc.perform(post("/professionals")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(professionalRequest)));
+
+    result.andExpect(status().isCreated())
+        .andExpect(header().exists("Location"))
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.name").value("Pedro Rocha"))
+        .andExpect(jsonPath("$.phone").value("15 999336117"))
+        .andExpect(jsonPath("$.active").value(true));
+  }
+
+  @Test
+  public void saveProfessional_UnprocessableEntity() throws Exception {
+    ProfessionalRequest professionalRequest = new ProfessionalRequest("", "", null,
+        List.of());
+
+    var result = mockMvc.perform(post("/professionals")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(professionalRequest)));
+
+    result.andExpect(status().isUnprocessableContent())
+        .andExpect(jsonPath("$.errors", hasSize(3)));
+  }
+
+  @Test
+  public void deleteProfessional_NoContent() throws Exception {
+    var result = mockMvc.perform(delete("/professionals/8"));
+
+    result.andExpect(status().isNoContent());
+  }
+
+  @Test
+  public void deleteProfessional_NotFound() throws Exception {
+    var result = mockMvc.perform(delete("/professionals/404"));
+
+    result.andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void deleteProfessionalWithAppointments_BadRequest() throws Exception {
+    var result = mockMvc.perform(delete("/professionals/6"));
+
+    result.andExpect(status().isBadRequest());
   }
 }
