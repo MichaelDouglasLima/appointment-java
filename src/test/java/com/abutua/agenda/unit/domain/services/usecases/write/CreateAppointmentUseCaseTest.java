@@ -79,7 +79,7 @@ public class CreateAppointmentUseCaseTest {
     Professional professional = mock(Professional.class);
     given(professional.isActive()).willReturn(true);
     given(professionalRepository.findById(anyLong())).willReturn(of(professional));
-    given(professionalRepository.existsAssocioationWithArea(anyLong(), anyInt())).willReturn(true);
+    given(professionalRepository.existsAssociationWithArea(anyLong(), anyInt())).willReturn(true);
 
     Client client = mock(Client.class);
     given(clientRepository.findById(anyLong())).willReturn(of(client));
@@ -118,7 +118,7 @@ public class CreateAppointmentUseCaseTest {
     verify(appointmentTypeRepository).existsById(any());
     verify(areaRepository).existsById(any());
     verify(professionalRepository).findById(any());
-    verify(professionalRepository).existsAssocioationWithArea(any(), any());
+    verify(professionalRepository).existsAssociationWithArea(any(), any());
     verify(searchProfessionalAvailabiltyTimesUseCase).executeUseCase(anyLong(), any());
     verify(clientRepository).findById(any());
     verify(appointmentRepository).save(any());
@@ -142,7 +142,7 @@ public class CreateAppointmentUseCaseTest {
     Professional professional = mock(Professional.class);
     lenient().when(professional.isActive()).thenReturn(true);
     lenient().when(professionalRepository.findById(anyLong())).thenReturn(of(professional));
-    lenient().when(professionalRepository.existsAssocioationWithArea(anyLong(), anyInt())).thenReturn(true);
+    lenient().when(professionalRepository.existsAssociationWithArea(anyLong(), anyInt())).thenReturn(true);
 
     Client client = mock(Client.class);
     lenient().when(clientRepository.findById(anyLong())).thenReturn(of(client));
@@ -194,7 +194,7 @@ public class CreateAppointmentUseCaseTest {
     Professional professional = mock(Professional.class);
     lenient().when(professional.isActive()).thenReturn(true);
     lenient().when(professionalRepository.findById(anyLong())).thenReturn(of(professional));
-    lenient().when(professionalRepository.existsAssocioationWithArea(anyLong(), anyInt())).thenReturn(true);
+    lenient().when(professionalRepository.existsAssociationWithArea(anyLong(), anyInt())).thenReturn(true);
 
     Client client = mock(Client.class);
     lenient().when(clientRepository.findById(anyLong())).thenReturn(of(client));
