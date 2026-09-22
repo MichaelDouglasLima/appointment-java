@@ -13,7 +13,7 @@ public interface ProfessionalRepository extends JpaRepository<Professional, Long
   @Query("SELECT COUNT(p) > 0 " +
       "FROM Professional p JOIN p.areas a " +
       "WHERE p.id = :professionalId AND a.id = :areaId")
-  boolean existsAssocioationWithArea(Long professionalId, Integer areaId);
+  boolean existsAssociationWithArea(Long professionalId, Integer areaId);
 
   Page<Professional> findByNameContainingIgnoreCase(String name, Pageable page);
 }
